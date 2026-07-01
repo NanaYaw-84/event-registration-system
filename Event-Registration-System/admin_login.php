@@ -2,21 +2,13 @@
 session_start();
 require_once 'config/database.php';
 
-if (isset($_SESSION['user_id'])) {
-    header('Location: dashboard.php');
+if (isset($_SESSION['admin_id'])) {
+    header('Location: admin_dashboard.php');
     exit;
 }
 
 $message = '';
 $messageType = '';
-
-$redirectTo = 'dashboard.php';
-if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
-    $redirectParam = trim($_GET['redirect']);
-    if (strpos($redirectParam, 'http') !== 0 && strpos($redirectParam, '//') !== 0) {
-        $redirectTo = $redirectParam;
-    }
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
@@ -26,22 +18,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = 'Email and password are required.';
         $messageType = 'danger';
     } else {
-        $stmt = $conn->prepare('SELECT id, fullname, password FROM users WHERE email = ?');
+        $adminCountStmt = $conn->prepare('SELECT COUNT(*) AS admin_count FROM users WHERE LOWER(TRIM(COALESCE(role, ""))) = "admin"');
+        $adminCountStmt->execute();
+        $adminCountResult = $adminCountStmt->get_result();
+        $adminCount = (int) ($adminCountResult->fetch_assoc()['admin_count'] ?? 0);
+        $adminCountStmt->close();
+
+        $stmt = $conn->prepare('SELECT id, fullname, password, role FROM users WHERE email = ? LIMIT 1');
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
+        $admin = $result->fetch_assoc();
         $stmt->close();
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['fullname'] = $user['fullname'];
-            header('Location: ' . $redirectTo);
-            exit;
-        } else {
-            $message = 'Invalid email or password.';
-            $messageType = 'danger';
+        if ($admin && password_verify($password, $admin['password'])) {
+            $role = strtolower(trim((string) ($admin['role'] ?? '')));
+            $isAdminAccount = $role === 'admin' || $role === 'administrator' || $adminCount === 0;
+
+            if ($isAdminAccount) {
+                if ($role !== 'admin' && $role !== 'administrator') {
+                    $promotionStmt = $conn->prepare('UPDATE users SET role = ? WHERE id = ?');
+                    $newRole = 'admin';
+                    $promotionStmt->bind_param('si', $newRole, $admin['id']);
+                    $promotionStmt->execute();
+                    $promotionStmt->close();
+                }
+
+                $_SESSION['admin_id'] = $admin['id'];
+                $_SESSION['admin_name'] = $admin['fullname'];
+                header('Location: admin_dashboard.php');
+                exit;
+            }
         }
+
+        $message = 'Invalid admin credentials.';
+        $messageType = 'danger';
     }
 }
 
@@ -56,10 +67,10 @@ require_once 'includes/navbar.php';
                 <div class="card-body p-4 p-md-5">
                     <div class="text-center mb-4">
                         <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
-                            <i class="bi bi-person-lock text-primary" style="font-size: 1.6rem;"></i>
+                            <i class="bi bi-shield-lock text-primary" style="font-size: 1.6rem;"></i>
                         </div>
-                        <h3 class="fw-bold mt-3 mb-2">Welcome Back</h3>
-                        <p class="text-muted mb-0">Sign in to continue to your dashboard</p>
+                        <h3 class="fw-bold mt-3 mb-2">Admin Login</h3>
+                        <p class="text-muted mb-0">Access the event management dashboard</p>
                     </div>
 
                     <?php if (!empty($message)): ?>
@@ -70,7 +81,7 @@ require_once 'includes/navbar.php';
 
                     <form method="post">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
+                            <label for="email" class="form-label">Admin Email</label>
                             <input type="email" class="form-control rounded-3" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
@@ -79,10 +90,6 @@ require_once 'includes/navbar.php';
                         </div>
                         <button type="submit" class="btn btn-primary w-100 rounded-3">Login</button>
                     </form>
-
-                    <p class="text-center mt-3 mb-0">
-                        Don't have an account? <a href="register.php">Register here</a>
-                    </p>
                 </div>
             </div>
         </div>

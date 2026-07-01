@@ -48,16 +48,27 @@ require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/navbar.php';
 ?>
 
-<div class="container mt-5">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4 text-center">
-                    <h3 class="mb-3">Payment Result</h3>
-                    <div class="alert alert-<?php echo htmlspecialchars($messageType); ?>" role="alert">
+                    <div class="mb-3">
+                        <?php if ($messageType === 'success'): ?>
+                            <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
+                                <i class="bi bi-check2-circle text-success" style="font-size: 2rem;"></i>
+                            </div>
+                        <?php else: ?>
+                            <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
+                                <i class="bi bi-x-circle text-danger" style="font-size: 2rem;"></i>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <h3 class="fw-bold mb-3">Payment Result</h3>
+                    <div class="alert alert-<?php echo htmlspecialchars($messageType); ?> rounded-3" role="alert">
                         <?php echo htmlspecialchars($message); ?>
                     </div>
-                    <a href="../dashboard.php" class="btn btn-primary">Go to Dashboard</a>
+                    <a href="../dashboard.php" class="btn btn-primary px-4">Go to Dashboard</a>
                 </div>
             </div>
         </div>

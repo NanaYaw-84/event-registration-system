@@ -36,7 +36,7 @@ $secretKey = 'sk_test_93b28b61739321ab24afcc4f25c9e19cab68ef85';
 if (empty(trim($secretKey))) {
     require_once __DIR__ . '/../includes/header.php';
     require_once __DIR__ . '/../includes/navbar.php';
-    echo '<div class="container mt-5"><div class="row justify-content-center"><div class="col-md-6"><div class="alert alert-danger">Paystack secret key is missing.</div></div></div></div>';
+    echo '<div class="container py-5"><div class="row justify-content-center"><div class="col-lg-6 col-md-8"><div class="card shadow-lg border-0 rounded-4"><div class="card-body p-4 text-center"><div class="text-danger mb-3"><i class="bi bi-shield-exclamation" style="font-size: 2rem;"></i></div><h4 class="fw-bold">Payment configuration missing</h4><p class="text-muted mb-0">Paystack secret key is missing.</p></div></div></div></div></div>';
     require_once __DIR__ . '/../includes/footer.php';
     exit;
 }
@@ -78,7 +78,7 @@ curl_close($ch);
 if ($curlError) {
     require_once __DIR__ . '/../includes/header.php';
     require_once __DIR__ . '/../includes/navbar.php';
-    echo '<div class="container mt-5"><div class="row justify-content-center"><div class="col-md-6"><div class="alert alert-danger">Payment initialization failed: ' . htmlspecialchars($curlError) . '</div></div></div></div>';
+    echo '<div class="container py-5"><div class="row justify-content-center"><div class="col-lg-6 col-md-8"><div class="card shadow-lg border-0 rounded-4"><div class="card-body p-4 text-center"><div class="text-danger mb-3"><i class="bi bi-exclamation-triangle" style="font-size: 2rem;"></i></div><h4 class="fw-bold">Payment could not be started</h4><p class="text-muted">' . htmlspecialchars($curlError) . '</p><a href="../dashboard.php" class="btn btn-outline-primary">Back to Dashboard</a></div></div></div></div></div>';
     require_once __DIR__ . '/../includes/footer.php';
     exit;
 }
@@ -89,7 +89,7 @@ if (!isset($responseData['status']) || !$responseData['status'] || empty($respon
     $message = isset($responseData['message']) ? $responseData['message'] : 'Unable to initialize payment.';
     require_once __DIR__ . '/../includes/header.php';
     require_once __DIR__ . '/../includes/navbar.php';
-    echo '<div class="container mt-5"><div class="row justify-content-center"><div class="col-md-6"><div class="alert alert-danger">' . htmlspecialchars($message) . '</div></div></div></div>';
+    echo '<div class="container py-5"><div class="row justify-content-center"><div class="col-lg-6 col-md-8"><div class="card shadow-lg border-0 rounded-4"><div class="card-body p-4 text-center"><div class="text-danger mb-3"><i class="bi bi-x-circle" style="font-size: 2rem;"></i></div><h4 class="fw-bold">Payment failed to initialize</h4><p class="text-muted">' . htmlspecialchars($message) . '</p><a href="../dashboard.php" class="btn btn-outline-primary">Back to Dashboard</a></div></div></div></div></div>';
     require_once __DIR__ . '/../includes/footer.php';
     exit;
 }

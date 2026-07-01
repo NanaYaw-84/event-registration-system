@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
-    <a class="navbar-brand" href="index.php">Event System</a>
+    <a class="navbar-brand fw-bold" href="index.php"><i class="bi bi-calendar2-event me-2"></i>EventHub</a>
 
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">

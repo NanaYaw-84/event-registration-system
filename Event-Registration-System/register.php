@@ -117,34 +117,48 @@ require_once 'includes/header.php';
 require_once 'includes/navbar.php';
 ?>
 
-<div class="container mt-5">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow-sm">
-                <div class="card-body p-4">
+        <div class="col-lg-7 col-md-9">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
                     <?php if ($event !== null): ?>
-                        <h3 class="text-center mb-4">Event Registration</h3>
+                        <div class="text-center mb-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                                <i class="bi bi-calendar2-event text-primary" style="font-size: 1.6rem;"></i>
+                            </div>
+                            <h3 class="fw-bold mt-3 mb-2">Event Registration</h3>
+                            <p class="text-muted mb-0">Complete your booking securely</p>
+                        </div>
 
                         <?php if (!empty($message)): ?>
-                            <div class="alert alert-<?php echo htmlspecialchars($messageType); ?>" role="alert">
+                            <div class="alert alert-<?php echo htmlspecialchars($messageType); ?> rounded-3" role="alert">
                                 <?php echo htmlspecialchars($message); ?>
                             </div>
                         <?php endif; ?>
 
-                        <h4 class="mb-3"><?php echo htmlspecialchars($event['title']); ?></h4>
-                        <p class="text-muted"><?php echo htmlspecialchars($event['description']); ?></p>
-                        <p><strong>Venue:</strong> <?php echo htmlspecialchars($event['venue']); ?></p>
-                        <p><strong>Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?></p>
-                        <p><strong>Price:</strong> $<?php echo htmlspecialchars($event['price']); ?></p>
+                        <div class="border rounded-4 p-4 mb-4 bg-light">
+                            <h4 class="mb-3"><?php echo htmlspecialchars($event['title']); ?></h4>
+                            <p class="text-muted"><?php echo htmlspecialchars($event['description']); ?></p>
+                            <p class="mb-2"><strong>Venue:</strong> <?php echo htmlspecialchars($event['venue']); ?></p>
+                            <p class="mb-2"><strong>Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?></p>
+                            <p class="mb-0"><strong>Price:</strong> $<?php echo htmlspecialchars($event['price']); ?></p>
+                        </div>
 
                         <form method="post">
-                            <button type="submit" class="btn btn-primary w-100">Proceed to Payment</button>
+                            <button type="submit" class="btn btn-primary w-100 rounded-3">Proceed to Payment</button>
                         </form>
                     <?php else: ?>
-                        <h3 class="text-center mb-4">Create an Account</h3>
+                        <div class="text-center mb-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                                <i class="bi bi-person-plus text-primary" style="font-size: 1.6rem;"></i>
+                            </div>
+                            <h3 class="fw-bold mt-3 mb-2">Create an Account</h3>
+                            <p class="text-muted mb-0">Join our event platform in minutes</p>
+                        </div>
 
                         <?php if (!empty($message)): ?>
-                            <div class="alert alert-<?php echo htmlspecialchars($messageType); ?>" role="alert">
+                            <div class="alert alert-<?php echo htmlspecialchars($messageType); ?> rounded-3" role="alert">
                                 <?php echo htmlspecialchars($message); ?>
                             </div>
                         <?php endif; ?>
@@ -152,21 +166,21 @@ require_once 'includes/navbar.php';
                         <form method="post">
                             <div class="mb-3">
                                 <label for="fullname" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                                <input type="text" class="form-control rounded-3" id="fullname" name="fullname" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control rounded-3" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="phone" name="phone" required>
+                                <input type="text" class="form-control rounded-3" id="phone" name="phone" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control rounded-3" id="password" name="password" required>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Register</button>
+                            <button type="submit" class="btn btn-primary w-100 rounded-3">Register</button>
                         </form>
 
                         <p class="text-center mt-3 mb-0">
